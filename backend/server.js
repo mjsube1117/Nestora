@@ -2,12 +2,12 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const connectDB = require("./config/db");
+
 const app = express();
 
-// Frontend requests allow pannum
+// Middleware
 app.use(cors());
-
-// JSON request body read pannum
 app.use(express.json());
 
 // Test API
@@ -20,6 +20,13 @@ app.get("/api/health", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// Database connect aanathukku piragu server start pannuvom
+const startServer = async () => {
+  await connectDB();
+
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+};
+
+startServer();
